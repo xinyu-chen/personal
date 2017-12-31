@@ -1,0 +1,36 @@
+{
+  "api.version": "v1",
+  "sources": [{
+    "name": "docker-container-cto-migration-dataflow-log",
+    "hostName": "@@INSTANCE_ID@@",
+    "category": "prod/us/docker/container/microservices/cto/reporting/logs",
+    "automaticDateParsing": true,
+    "multilineProcessingEnabled": true,
+    "useAutolineMatching": false,
+    "forceTimeZone": false,
+    "timeZone": "Etc/UTC",
+    "filters": [],
+    "cutoffTimestamp": 1464382800000,
+    "encoding": "UTF-8",
+    "pathExpression": "/opt/behalf/cto/reporting/log/*.log",
+    "blacklist": [],
+    "sourceType": "LocalFile"
+
+  },{
+    "name": "docker-container-bootstrap-log",
+    "hostName": "@@INSTANCE_ID@@",
+    "category": "prod/us/docker/container/bootstrap/logs",
+    "automaticDateParsing": true,
+    "multilineProcessingEnabled": false,
+    "useAutolineMatching": false,
+    "forceTimeZone": false,
+    "timeZone": "Etc/UTC",
+    "filters": [],
+    "cutoffTimestamp": 1464382800000,
+    "encoding": "UTF-8",
+    "pathExpression": "/opt/docker/log/*.log",
+    "blacklist": [],
+    "sourceType": "LocalFile"
+
+  }]
+}
