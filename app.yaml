@@ -7,7 +7,7 @@ env: flex
 runtime_config:
     python_version: 3.6
 
-#entrypoint: gunicorn -b :$PORT main:app
+entrypoint: gunicorn -b :$PORT main:app
 
 liveness_check:
   path: '/keep-alive'

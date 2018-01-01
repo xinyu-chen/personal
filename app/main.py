@@ -18,9 +18,7 @@ application = Flask(__name__)
 
 @application.route('/')
 def hello():
-
     logging.info('hello')
-    """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
 @application.route('/keep-alive')
@@ -40,6 +38,3 @@ if __name__ == '__main__':
     # application on Google App Engine. See entrypoint in app.yaml.
     logging.basicConfig(filename='/opt/behalf/cto/reporting/log/reporting.log', level=logging.INFO)
     application.run(port=8080, debug=True)
-
-
-

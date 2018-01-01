@@ -1,4 +1,5 @@
-FROM gcr.io/google_appengine/python
+FROM gcr.io/google-appengine/python
+LABEL python_version=python3.6
 VOLUME /tmp
 
 ENV DOCKER_BASEDIR /opt/docker

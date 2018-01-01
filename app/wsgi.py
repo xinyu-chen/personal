@@ -1,5 +1,5 @@
 from main import application
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='/opt/behalf/cto/reporting/log/reporting.log', level=logging.INFO)
+    logger.info('starting application...')
     application.run()
