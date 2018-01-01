@@ -13,7 +13,7 @@
     "cutoffTimestamp": 1464382800000,
     "encoding": "UTF-8",
     "pathExpression": "/opt/behalf/cto/reporting/log/*.log",
-    "blacklist": [],
+    "blacklist": ["/opt/behalf/cto/reporting/log/reporting_access.log"],
     "sourceType": "LocalFile"
 
   },{
