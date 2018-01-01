@@ -24,7 +24,6 @@ ENV PATH /env/bin:$PATH
 ADD requirements.txt /app/
 RUN pip install -r requirements.txt
 ADD . /app/
-#CMD cd app && exec gunicorn -b :$PORT wsgi
-ADD entrypoint.sh /
-CMD bash -x entrypoint.sh reporting | tee -a ${DOCKER_LOGDIR}/startup.log
+
+CMD bash -x ${DOCKER_SCRIPTS_DIR}/startup.sh reporting | tee -a ${DOCKER_LOGDIR}/startup.log
 
