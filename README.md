@@ -19,7 +19,7 @@ pip install -t lib -r requirements.txt
 * Deploy
 gcloud app deploy
 
-* Running the application
+* Running the application (need to be in app folder)
 python main.py
 
 by gunicorn:
