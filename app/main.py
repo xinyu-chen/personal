@@ -2,6 +2,7 @@ import logging
 
 from flask import Flask
 
+from app.paymentReport.peeriq_upload import uploadXml
 
 application = Flask(__name__)
 
@@ -32,6 +33,12 @@ def server_error(e):
     An internal error occurred: <pre>{}</pre>
     See logs for full stacktrace.
     """.format(e), 500
+
+
+@application.route('/payment/uploadXml')
+def paymentUploadXml():
+    uploadXml()
+    return 'run'
 
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the

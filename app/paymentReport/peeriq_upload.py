@@ -1,34 +1,10 @@
+import datetime as dt
+import logging
+
 from google.cloud import bigquery
 from google.cloud import storage
 from oauth2client.client import GoogleCredentials
-import datetime as dt
-import os
-import sys
 
-#find folder directory
-direct = sys.argv[0].split('/')
-direct = '/'.join(direct[:-1])
-
-
-# Create credential as an environmental variable
-json_key = direct+'/SF-backup-411eeb87f9ca.json'
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json_key
-
-credentials = GoogleCredentials.get_application_default()
-
-# Project under sf-backup
-client = bigquery.Client()
-# Project under xy-private
-xy_client = bigquery.Client(project='xy-private')
-
-# Set-ups
-today = dt.datetime.today().strftime('%Y_%m_%d')
-
-xy_dataset_id = 'peeriq'
-gcs_project = 'xy-private'
-bucket_name = 'xml_upload'
-loan_tape_name = 'lt_'+today
-payment_name = 'p_'+today
 
 def get_sql(date):
     query = """SELECT *, CASE WHEN LoanStatus='Charged Off' THEN PrincipalOutstanding Else 0 END as NetLoss,CASE WHEN LoanStatus='Charged Off' THEN ROUND(DefaultAmount-PrincipalOutstanding,2) ELSE 0 END as Recoveries   
@@ -126,19 +102,42 @@ def dl_from_gcs(project_id, bucket_name, file_name):
         blob.download_to_file(file)
     
 
-# Save both files to GCS
-p_dataset_ref = client.dataset(today)
-p_table_ref = p_dataset_ref.table('Payment')
-p_destination = 'gs://xml_upload/'+payment_name+'.csv'
-export_data_to_gcs(p_table_ref, p_destination)
-
-lt_table_ref = run_query(today, client)
-lt_destination = 'gs://xml_upload/'+loan_tape_name+'.csv'
-export_data_to_gcs(lt_table_ref, lt_destination)
 
 # Download both from GCS
 def download_file(file_name):
     dl_from_gcs('xy-private', bucket_name, file_name)
 
-download_file(loan_tape_name+'.csv')
-download_file(payment_name+'.csv')
+
+def uploadXml():
+    logging.info('uploadXml')
+    credentials = GoogleCredentials.get_application_default()
+
+    # Project under sf-backup
+    client = bigquery.Client()
+    # Project under xy-private
+    xy_client = bigquery.Client(project='xy-private')
+
+    # Set-ups
+    today = dt.datetime.today().strftime('%Y_%m_%d')
+
+    xy_dataset_id = 'peeriq'
+    gcs_project = 'xy-private'
+    bucket_name = 'xml_upload'
+    loan_tape_name = 'lt_'+today
+    payment_name = 'p_'+today
+
+    # Save both files to GCS
+    p_dataset_ref = client.dataset(today)
+    p_table_ref = p_dataset_ref.table('Payment')
+    p_destination = 'gs://xml_upload/' + payment_name + '.csv'
+    export_data_to_gcs(p_table_ref, p_destination)
+
+    lt_table_ref = run_query(today, client)
+    lt_destination = 'gs://xml_upload/' + loan_tape_name + '.csv'
+    export_data_to_gcs(lt_table_ref, lt_destination)
+
+    download_file(loan_tape_name + '.csv')
+    download_file(payment_name + '.csv')
+
+
+
