@@ -43,5 +43,5 @@ def paymentUploadXml():
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
-    logging.basicConfig(filename='/opt/behalf/cto/reporting/log/reporting.log', level=logging.INFO)
+    #logging.basicConfig(filename='/opt/behalf/cto/reporting/log/reporting.log', level=logging.INFO)
     application.run(port=8080, debug=True)

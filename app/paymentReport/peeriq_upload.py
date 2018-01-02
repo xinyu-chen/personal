@@ -7,6 +7,11 @@ from oauth2client.client import GoogleCredentials
 
 download_folder = '/opt/behalf/cto/reporting/data'
 
+# Project under sf-backup
+client = bigquery.Client(project='bi-tables')
+# Project under xy-private
+xy_client = bigquery.Client(project='xy-private')
+
 def get_sql(date):
     query = """SELECT *, CASE WHEN LoanStatus='Charged Off' THEN PrincipalOutstanding Else 0 END as NetLoss,
     CASE WHEN LoanStatus='Charged Off' THEN GREATEST(ROUND(DefaultAmount-PrincipalOutstanding,2),0) ELSE 0 END as Recoveries   
@@ -98,10 +103,7 @@ def uploadXml():
     logging.info('uploadXml')
     credentials = GoogleCredentials.get_application_default()
 
-    # Project under sf-backup
-    client = bigquery.Client()
-    # Project under xy-private
-    xy_client = bigquery.Client(project='xy-private')
+
 
     # Set-ups
     today = dt.datetime.today().strftime('%Y_%m_%d')
@@ -113,7 +115,7 @@ def uploadXml():
     payment_name = 'p_'+today
 
     # Save both files to GCS
-    p_dataset_ref = client.dataset(today)
+    p_dataset_ref = client.dataset('Salesforce')
     p_table_ref = p_dataset_ref.table('Payment')
     p_destination = 'gs://xml_upload/' + payment_name + '.csv'
     export_data_to_gcs(p_table_ref, p_destination)
