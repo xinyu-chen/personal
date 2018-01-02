@@ -18,6 +18,9 @@ liveness_check:
   initial_delay_sec: 1000
 
 
+manual_scaling:
+  instances: 1
+
 # [START handlers]
 handlers:
 - url: /static

@@ -5,6 +5,7 @@ from google.cloud import bigquery
 from google.cloud import storage
 from oauth2client.client import GoogleCredentials
 
+download_folder = '/opt/behalf/cto/reporting/data'
 
 def get_sql(date):
     query = """SELECT *, CASE WHEN LoanStatus='Charged Off' THEN PrincipalOutstanding Else 0 END as NetLoss,CASE WHEN LoanStatus='Charged Off' THEN ROUND(DefaultAmount-PrincipalOutstanding,2) ELSE 0 END as Recoveries   

@@ -10,6 +10,7 @@ ADD ./sumologic_sources.json ${SUMOLOGIC_CONFDIR}/sumologic_sources.json
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 CMD export app_folder = reporting
 RUN mkdir -p /opt/behalf/cto/reporting/log
+RUN mkdir -p /opt/behalf/cto/reporting/data
 
 ENV DOCKER_BASEDIR /opt/docker
 ENV DOCKER_LOGDIR  ${DOCKER_BASEDIR}/log
