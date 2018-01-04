@@ -11,8 +11,16 @@ download_folder = '/opt/behalf/cto/reporting/data'
 client = bigquery.Client(project='bi-tables')
 # Project under xy-private
 xy_client = bigquery.Client(project='xy-private')
+xy_dataset_id = 'peeriq'
+gcs_project = 'xy-private'
+bucket_name = 'xml_upload'
+# Set-ups
+today = dt.datetime.today().strftime('%Y_%m_%d')
 
-def get_sql(date):
+loan_tape_name = 'lt_' + today
+payment_name = 'p_' + today
+
+def get_sql():
     query = """SELECT *, CASE WHEN LoanStatus='Charged Off' THEN PrincipalOutstanding Else 0 END as NetLoss,
     CASE WHEN LoanStatus='Charged Off' THEN GREATEST(ROUND(DefaultAmount-PrincipalOutstanding,2),0) ELSE 0 END as Recoveries   
     FROM (   
@@ -73,7 +81,7 @@ def create_table(date, dataset_id, table_id):
     return table_ref
 
 def run_query(date, client):
-    sql = get_sql(today)
+    sql = get_sql()
     config = bigquery.QueryJobConfig()
     config.use_legacy_sql = True
     result_table = create_table(date, xy_dataset_id, loan_tape_name)
@@ -105,14 +113,7 @@ def uploadXml():
 
 
 
-    # Set-ups
-    today = dt.datetime.today().strftime('%Y_%m_%d')
 
-    xy_dataset_id = 'peeriq'
-    gcs_project = 'xy-private'
-    bucket_name = 'xml_upload'
-    loan_tape_name = 'lt_'+today
-    payment_name = 'p_'+today
 
     # Save both files to GCS
     p_dataset_ref = client.dataset('Salesforce')

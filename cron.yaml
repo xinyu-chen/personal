@@ -1,0 +1,4 @@
+cron:
+- description: "daily upload job"
+  url: /payment/uploadXml
+  schedule: every day 12:00
