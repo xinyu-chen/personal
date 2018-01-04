@@ -1,0 +1,7 @@
+cron:
+ - description: Health Keep Alive
+   url: /keep-alive
+   schedule: every 1 mins
+   target: schedual-app-script
+
+
