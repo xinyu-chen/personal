@@ -87,7 +87,7 @@ def run_query(date, client):
     result_table = create_table(date, xy_dataset_id, loan_tape_name)
     config.destination = result_table
     job = client.query(sql, job_config = config)
-    result = job.result()
+
     return result_table
 
 def export_data_to_gcs(table_ref, destination):
@@ -109,10 +109,6 @@ def download_file(file_name):
 
 def uploadXml():
     logging.info('uploadXml')
-    credentials = GoogleCredentials.get_application_default()
-
-
-
 
 
     # Save both files to GCS
