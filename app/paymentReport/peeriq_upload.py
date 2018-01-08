@@ -5,7 +5,7 @@ from google.cloud import bigquery
 from google.cloud import storage
 from oauth2client.client import GoogleCredentials
 
-download_folder = '/opt/behalf/cto/reporting/data'
+download_folder = '/opt/behalf/cto/reporting/data/'
 
 # Project under sf-backup
 client = bigquery.Client(project='bi-tables')
@@ -97,7 +97,7 @@ def export_data_to_gcs(table_ref, destination):
 def dl_from_gcs(project_id, bucket_name, file_name):
     gcs = storage.Client(project=project_id)
     blob = gcs.bucket(bucket_name).get_blob(file_name)
-    with open(file_name, 'wb') as file:
+    with open(download_folder+file_name, 'wb') as file:
         blob.download_to_file(file)
     
 
