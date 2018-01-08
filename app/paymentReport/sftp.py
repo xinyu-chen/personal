@@ -4,8 +4,10 @@ import logging
 hostname = ''
 username = ''
 password = ''
-source = ''
+source = '/opt/behalf/cto/reporting/data/'
 destination = ''
+p_file_name = ''
+lt_file_name = ''
 
 def sftp():
     # Instantiate client
@@ -17,6 +19,6 @@ def sftp():
 
     # Put file in server from local path
     ftp = ssh_client.open_sftp()
-    ftp.put(source+'/'+payment_name+'.csv', destination)
-    ftp.put(source+'/'+loan_tape_name+'.csv', destination)
+    ftp.put(source+'/'+p_file_name, destination+p_file_name)
+    ftp.put(source+'/'+lt_file_name, destination+lt_file_name)
     ftp.close
