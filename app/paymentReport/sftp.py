@@ -29,6 +29,6 @@ logging.info('Connected to server.')
 
 # Put file in server from local path
 ftp = ssh_client.open_sftp()
-ftp.put(source+'/'+file_name, directory+file_name)
-
+ftp.put(source+'/'+payment_name, directory+payment_name)
+ftp.put(source+'/'+loan_tape_name, directory+loan_tape_name)
 ftp.close()
