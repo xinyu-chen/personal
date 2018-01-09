@@ -1,24 +1,34 @@
-import paramiko
 import logging
+import sys
 
-hostname = ''
-username = ''
-password = ''
+
+#find folder directory
+direct = sys.argv[0].split('/')
+direct = '/'.join(direct[:-1])
+
+import paramiko
+
+hostname = 'sftp.peeriq.com'
+username = 'behalf'
+password = 'Behalf2017!'
+directory = '/Inbound/'
 source = '/opt/behalf/cto/reporting/data/'
-destination = ''
-p_file_name = ''
-lt_file_name = ''
 
-def sftp():
-    # Instantiate client
-    ssh_client = paramiko.SSHClient()
-    # Set missing key policy (For local machine)
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(hostname=hostname, username=username,password=password)
-    logging.info('Connected to server.')
+today = dt.datetime.today().strftime('%Y_%m_%d')
+loan_tape_name = 'lt_' + today
+payment_name = 'p_' + today
 
-    # Put file in server from local path
-    ftp = ssh_client.open_sftp()
-    ftp.put(source+'/'+p_file_name, destination+p_file_name)
-    ftp.put(source+'/'+lt_file_name, destination+lt_file_name)
-    ftp.close
+key_filename = direct+'/id_rsa'
+# Instantiate client
+ssh_client = paramiko.SSHClient()
+# Accept server public key
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+# Connect and autheticate with password
+ssh_client.connect(hostname=hostname, username=username,password=password, key_filename = key_filename)
+logging.info('Connected to server.')
+
+# Put file in server from local path
+ftp = ssh_client.open_sftp()
+ftp.put(source+'/'+file_name, directory+file_name)
+
+ftp.close()
