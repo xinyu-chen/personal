@@ -3,7 +3,7 @@ VOLUME /tmp
 
 ENV SUMOLOGIC_BASEDIR /opt/SumoCollector
 ENV SUMOLOGIC_CONFDIR ${SUMOLOGIC_BASEDIR}/config
-ADD ./sumologic_sources.json ${SUMOLOGIC_CONFDIR}/sumologic_sources.json
+COPY ./sumologic_sources.json ${SUMOLOGIC_CONFDIR}/sumologic_sources.json
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # INSTALL gcp credentials
@@ -22,9 +22,10 @@ RUN virtualenv --no-download /env -p python3.6
 # source /env/bin/activate
 ENV VIRTUAL_ENV /env
 ENV PATH /env/bin:$PATH
-ADD requirements.txt /app/
+COPY requirements.txt /app/
 RUN pip install -r requirements.txt
-ADD . /app/
+RUN mkdir app
+COPY ./app ./app/
 
 CMD bash -x ${DOCKER_SCRIPTS_DIR}/startup.sh reporting | tee -a ${DOCKER_LOGDIR}/startup.log
 

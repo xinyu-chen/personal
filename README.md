@@ -7,8 +7,11 @@ docker build -t python-appengine-sumo-base -f ./Dockerfile . --no-cache
 docker tag [containerId] gcr.io/ordinal-ember-163410/python-appengine-sumo-base
 gcloud docker -- push gcr.io/ordinal-ember-163410/python-appengine-sumo-base
 
-*Build docker
-docker build -t local -f ./Dockerfile . --no-cache
+*Build docker locally
+docker build -t local/python -f ./Dockerfile .
+
+to run:
+docker run -it -p 8080:8080 local/python:latest
 
 * Installation
 virtualenv -p python3 env

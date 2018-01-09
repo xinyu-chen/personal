@@ -3,7 +3,6 @@ import logging
 
 from google.cloud import bigquery
 from google.cloud import storage
-from oauth2client.client import GoogleCredentials
 
 download_folder = '/opt/behalf/cto/reporting/data/'
 

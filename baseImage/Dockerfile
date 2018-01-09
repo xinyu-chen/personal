@@ -27,11 +27,11 @@ RUN wget -O ${SUMO_LATEST_DEBPKG_NAME} ${SUMO_INSTALLER_URL} && \
          rm ${SUMO_LATEST_DEBPKG_NAME} ; \
     fi
 
-ADD sumo.conf /etc/sumo.conf.behalf
+COPY sumo.conf /etc/sumo.conf.behalf
 #ADD sumologic_sources.json ${SUMOLOGIC_CONFDIR}/sumologic_sources.json
 
 RUN mkdir -p ${DOCKER_SCRIPTS_DIR}
-ADD startup.sh ${DOCKER_SCRIPTS_DIR}/startup.sh
+COPY startup.sh ${DOCKER_SCRIPTS_DIR}/startup.sh
 RUN chmod +x ${DOCKER_SCRIPTS_DIR}/startup.sh
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
