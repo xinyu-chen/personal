@@ -1,7 +1,7 @@
 #!/bin/bash -v
 set -x
 
-HOSTNAME=`curl -s http://169.254.169.254/computeMetadata/v1beta1/instance/hostname`
+HOSTNAME=`curl -s --connect-timeout 10 http://169.254.169.254/computeMetadata/v1beta1/instance/hostname`
 
 SUMO_CONF_FILE="/etc/sumo.conf"
 SUMO_CONF_BEHALF_TEMPLATE="/etc/sumo.conf.behalf"
