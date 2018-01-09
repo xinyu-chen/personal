@@ -2,7 +2,7 @@ import logging
 
 from flask import Flask
 
-from app.paymentReport.peeriq_upload import uploadXml
+from paymentReport.peeriq_upload import uploadXml
 
 application = Flask(__name__)
 
