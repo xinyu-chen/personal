@@ -1,8 +1,31 @@
 import logging
+from functools import wraps
+from flask import Flask, jsonify, request, Response
+from BQService import BQService
 
-from flask import Flask
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'behalf' and password == 'zazma123'
 
-from paymentReport.peeriq_upload import uploadXml
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+# Creates a wrapper authentication function around a function. Credentials will be needed to run the function within
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+
 
 application = Flask(__name__)
 
@@ -16,6 +39,7 @@ application = Flask(__name__)
 #         return await func(request, *args, **kwargs)
 #
 #     return secured
+
 
 @application.route('/')
 def hello():
@@ -35,10 +59,13 @@ def server_error(e):
     """.format(e), 500
 
 
-@application.route('/payment/uploadXml')
-def paymentUploadXml():
-    uploadXml()
-    return 'run'
+@application.route('/account/<id>')
+@requires_auth
+def export_json(id):
+    ''' Extracts data from BQ and return results in JSON format'''
+    data = BQService.get_data(id)
+    return jsonify(data)
+
 
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
